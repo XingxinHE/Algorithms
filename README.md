@@ -12,6 +12,7 @@ This lecture covers following topics:
 - efficiency - evaluate the efficiency
 - model of computation - how to compute and integrate algorithm in computation
 - data structure - how data structure can help
+- runtime analysis - having all set up, it's time to analyze
 
 
 
@@ -185,6 +186,8 @@ Normally, we suppose the processor supports many **constant time operations** on
 
 A **data structure** is **a way to store a non-constant amount of data**, supporting a set of operations to interact with that data.
 
+
+
 :pushpin:**What is interface?**
 
 The set of operations supported by a data structure is called an **interface**. (:warning: The interface here is not the one in C# e.g. `IEnumerable`)
@@ -206,6 +209,269 @@ The data structures determine **how to store data highly affect the runtime** of
 - Many data structures might support the same interface, but could provide different performance for each operation. 
 
 - Many problems can be solved trivially by storing data in an appropriate choice of data structure.
+
+
+
+:pushpin:**What is Static Array?**
+
+- It is the most common data structure.
+- It is simply a contiguous sequence of words reserved in memory, supporting a static sequence interface.
+
+It have following interfaces:
+
+`StaticArray(n)`  ->  allocate a new static array of size $n$ initialized to 0 in $\Theta(n)$ time
+
+`StaticArray.get_at(i)`  ->  return the word stored at array index $i$ in $\Theta(1)$ time 
+
+`StaticArray.set_at(i, x)`  ->  write the word $x$ to array index $i$ in $\Theta(1)$ time
+
+
+
+:pushpin:**Solving birthday match in Python**
+
+```python
+class StaticArray:
+        def __init__(self, n):
+                self.data = [None] * n             # (0)Init
+                                                   
+                                                   # (1)get func
+        def get_at(self, i):
+                if not (0 <= i < len(self.data)):      # check if the index i is valid
+                        raise IndexError
+                return self.data[i]                    # get the data at index i
+
+                                                   # (2)set func
+        def set_at(self, i, x):
+                if not (0 <= i < len(self.data)):      # check if the index is valid
+                        raise IndexError
+                self.data[i] = x                       # set the data at index i
+
+def birthday_match(students):
+        """
+        Find a pair of students with the same birthday
+        Input: tuple of student (name, bday) tuples
+        Output: tuple of student names or None
+        """
+        n = len(students)                                        # O(1)
+        record = StaticArray(n)                                  # O(n)
+        for i in range(n):                                       # n
+                (name_que, bday_que) = students[i]               # O(1)
+                for j in range(i):                               # k   check if it is in record
+                        (name_rec, bday_rec) = record[j]         # O(1)
+                        if bday_rec == bday_que:                 # O(1)
+                                return (name_que, name_rec)      # O(1)
+                record.set_at(i, (name_que, bday_que))           # O(1)
+        return None                                              # O(1)
+
+```
+
+
+
+## 1.6. Runtime Analysis
+
+:pushpin: **Disclaimer**
+
+Runtime analysis only *approximates* it! It cares the degree and coefficient of $n$ the most.
+
+
+
+:pushpin:**Analysis of birthday match algorithm**
+
+All the lines take constant time except for following lines with heavy computation:
+
+- `record = StaticArray(n)` , this takes $\Theta(n)$ time to initialize the static array record.
+- `for i in range(n)`, in worst case, it will loop at most $n$ times
+- `for j in range(i)`, it will loop through $k$ times
+
+:star: Here is the key: in the worst case, we have to loop over $n$ times, in the meantime, inside the $n$ loop, we have to check $k,k-1,k-2,k-3,...,0$. Hence the operation can be represented as following abstract chart.
+
+```
+⬤
+⬤⬤
+⬤⬤⬤
+⬤⬤⬤⬤
+⬤⬤⬤⬤⬤
+⬤⬤⬤⬤⬤⬤
+```
+
+Therefore, it could be written as:
+$$
+\Omicron(n)+\sum_{k=0}^{n-1}(\Omicron(1)+k\cdot\Omicron(1))=\Omicron(n^2)
+$$
+:thinking: OK, you may wonder, why left hand side becomes $n^2$ (square)?! while the chart above is a triangle??
+
+That's the disclaimer said - *approximate*. Because these 2 `for` loop can be seen as
+$$
+\frac{n\cdot(n-1)}{2}\approx n^2
+$$
+This is quadratic in $n$, which is **polynomial**! Is this efficient? No! We **can do better** by using a different data structure tailored to support a different set of operations efficiently.
+
+
+
+## 1.7. Asymptotic Exercises
+
+___
+
+:page_facing_up: **Question**: 
+
+Find a simple, tight asymptotic bound for $\Big(\begin{matrix}n\\6006\end{matrix}\Big)$.
+
+:pencil2:**Solution:** 
+
+Definition yields $n(n-1)...(n-6005)$ in the numerator (a degree 6006 polynomial) and 6006! in the denominator (constant with respect to $n$). So:
+$$
+\Big(\begin{matrix}n\\6006\end{matrix}\Big)=\Theta(n^{6006})
+$$
+
+
+
+
+
+
+
+
+___
+
+:page_facing_up: **Question**: 
+
+ Find a simple, tight asymptotic bound for $\log_{6006}\Big((\log(n^{\sqrt{n}}))^2\Big)$
+
+:pencil2:**Solution:** 
+
+First, we have rules for exponent and logarithm rules:
+$$
+\begin{align}
+\log ab&=\log a+\log b\\
+\log(a^b)&=b\log a\\
+\log_ab&=\log b/\log a
+\end{align}
+$$
+Therefore, we have:
+$$
+\begin{align}
+\log_{6006}\Big((\log(n^{\sqrt{n}}))^2\Big) &=\\
+&=\frac{\log(\log(n^{\sqrt{n}})^2)}
+{\log6006}
+\\
+&=\frac{2\log(\log(n^{\sqrt{n}}))}
+{\log6006}
+\\
+&=\frac{2}
+{\log6006}\log(\log(n^{\sqrt{n}}))
+\\
+&=\frac{2}
+{\log6006}\log(\sqrt{n}\log(n))
+\\
+&\approx\log(\sqrt{n}\log(n))
+\\
+&\approx\Theta(\log n^{1/2}+\log\log n)
+\\
+&\approx\Theta(\log n)
+\end{align}
+$$
+
+For $\approx$, we should know:
+$$
+\frac{2}{\log6006}=\frac{2}{3.77}\approx1
+\\
+\log\log n\approx0
+\\
+\log n^{1/2}=\frac{1}{2}\log n\approx\log n
+$$
+
+
+
+
+
+
+
+___
+
+:page_facing_up: **Question**: 
+
+Show that $2^{n+1}\in\Theta(2^n)$, but that $2^{2^{n+1}}\not\in\Omicron(2^{2^n})$
+
+:pencil2:**Solution:** 
+
+$\Theta$, tight bound, **as fast as**
+
+$\Omicron$, upper bound, **no faster than**
+
+Therefore, we have to prove 
+
+​	A.    $2^{n+1}$ **can** grow faster **or** slower than $2^n$:
+
+Because $2^{n+1}=2\cdot2^n$, therefore $2^{n+1}$ bigger than $2^n$
+
+​	B.    $2^{2^{n+1}}$ **MUST** grow faster than $2^{2^n}$:
+
+Because $2^{2^{n+1}}=2^{2^n}\cdot2^2$, therefore $2^{2^{n+1}}$ bigger than $2^{2^n}$
+
+
+
+
+
+
+
+___
+
+:page_facing_up: **Question**: 
+
+Show that $(\log n)^a=\Omicron(n^b)$ for all positive constants $a$ and $b$.
+
+:pencil2:**Solution:** 
+
+$\Omicron$, upper bound, **no faster than**
+
+Therefore, to prove this, we have to say $(\log n)^a<n^b$ is always true. That said, if $n$ approaches $\infin$, this is true.
+
+Goal of proof:
+$$
+\frac{n^b}{(\log n)^a} \to\infin\quad,\text{as } n\to\infin
+$$
+To prove:
+$$
+\begin{align}
+\lim_{n\to\infin}\log(\frac{n^b}{(\log n)^a})&=\lim_{n\to\infin}(b\log n-a\log\log n)\\
+&=\lim_{x\to\infin}(bx-a\log x)\\
+&=\infin
+\end{align}
+$$
+
+
+
+
+
+
+___
+
+:page_facing_up: **Question**: 
+
+Show that $(\log n)^{\log n}=\Omega(n)$
+
+:pencil2:**Solution:** 
+
+Since $m^m=\Omega(2^m)$, so setting $n=2^m$ completes the proof.
+
+
+
+
+
+
+
+___
+
+:page_facing_up: **Question**: 
+
+Show that $(6n)!\not\in\Theta(n!)$, but that $\log((6n)!)\in\Theta(\log(n!))$
+
+:pencil2:**Solution:** 
+
+Sterling's approximation:
+$$
+n!=\sqrt{2\pi n}\Big(\frac{n}{e}\Big)^n\Bigg(1+\Theta(\frac{1}{n})\Bigg)
+$$
+Substituting in $6n$ gives an expression that is at least $6^{6n}$ larger than the original. But taking the logarithm of Sterling’s gives $\log(n!) = \Theta(n \log n)$, and substituting in $6n$ yields only constant additional factors.
 
 
 
