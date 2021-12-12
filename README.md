@@ -477,28 +477,210 @@ Substituting in $6n$ gives an expression that is at least $6^{6n}$ larger than t
 
 
 
+## 1.8. Road Map of this Course:star:
+
+
+
 # 2.Data Structures
 
 :pushpin:**Review of Data Structure and Interface**
 
 When you think of *data structure* and *interface*, please do combine them altogether! From my point of view, their relationship is:
 
-```mermaid
-graph LR
-A[Data Structure] --> B(Interface)
-B(Interface) --> A[Data Structure]
-    B --> C{Operation}
-```
 
-|      | Data Structure | Interface |
-| ---- | -------------- | --------- |
-|      |                |           |
-|      |                |           |
-|      |                |           |
+
+<center>
+<figure>
+  <img src="img/diagram_datastructure.png" style="width:80%" class="center">
+  <figcaption>Fig.Interface is an interface of data structure.</figcaption>
+</figure>
+</center>
+
+
+
+| Data Structure                                              | Interface                                              |
+| ----------------------------------------------------------- | ------------------------------------------------------ |
+| A way to store data with algorithms that support operations | A collection of supported operations                   |
+| a **representation**: **how** operations are supported      | a **specification**: **what** operations are supported |
+| the solution!                                               | the problem!                                           |
+
+
+
+In this class, we will work on **2** main interfaces: **Sequence** and **Set**.
+
+
+
+## 2.1. Sequence Interface
+
+:pushpin:**What is a sequence?**
+
+Sequences maintain a collection of items in an **extrinsic** order, where each item stored has **a rank in the sequence**, including a first item and a last item.
+
+:pushpin:**What does it mean by `extrinsic`?**
+
+By extrinsic, we mean that the first item is ‘first’, not because of what the item is, but **because some external party put it there**. In short, the first is because it is THE first.
+
+:pushpin:**Properties of sequence**
+
+Therefore, we can conclude that the sequence interface has following properties:
+
+- :one:Maintain a sequence of items (order is **extrinsic**)    e.g. ($x_0,x_1,x_2,...,x_{n−1}$) (zero indexing)
+- :two:Use $n$ to denote the number of items stored in the data structure
+- :three:Supports following operations:
+
+| Function Categories | Function                                                     | Function Description                                         |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Container           | `build(X)`<br />`len()`                                      | given an iterable $X$ build sequence from items in $X$ <br/>return the number of stored items |
+| Static              | `iter_seq()`<br/>`get_at(i)`<br/>`set_at(i, x)`              | return the stored items one-by-one in sequence order<br/>return the $i^{th}$ item<br/>replace the $i^{th}$ item with $x$ |
+| Dynamic             | `insert_at(i, x)`<br/>`delete_at(i)`<br/>`insert_first(x)`<br/>`delete_first()`<br/>`insert_last(x)`<br/>`delete_last()` | add $x$ as the $i^{th}$ item <br/>remove and return the $i^{th}$ item <br/>add $x$ as the first item <br/>remove and return the first item <br/>add $x$ as the last item <br/>remove and return the last item |
+
+**:pushpin:Special case of sequence: `stack` and `queue`**
+
+Sequences are generalizations of `stacks` and `queues`, which support a subset of sequence operations. The hierarchy is the following:
+
+<center>
+<figure>
+  <img src="img/stack_queue.png" style="width:30%" class="center">
+  <figcaption>Fig. Hierarchy of stack and queue.</figcaption>
+</figure>
+</center>
+
+`stack` supports:
+
+- `insert_last(x)`
+- `delete_last()`
+
+`queue` supports:
+
+- `insert_last(x)`
+- `delete_first()`
+
+
+
+## 2.2. Set Interface
+
+:pushpin:**What is a set?**
+
+Sets maintain a collection of items based on an **intrinsic** property.
+
+:pushpin:**What does it mean by `intrinsic`?**
+
+By intrinsic, it means what the items are, usually based on a unique key, `x.key`, associated with each item `x`.
+
+:pushpin:**Properties of set**
+
+Therefore, we can conclude that the set interface has following properties:
+
+- :one:Maintain a set of items having **unique** keys:    e.g. item `x` has key `x.key`   
+- :two:Supports following operations:
+
+| Function Categories | Function                                                     | Function Description                                         |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Container           | `build(x)`<br/>`len()`                                       | given an iterable $X$, build set from items in $X$<br/>return the number of stored items |
+| Static              | `find(k)`                                                    | return the stored item with key `k`                          |
+| Dynamic             | `insert(x)`<br/>`delete(k)`                                  | add `x` to set (replace item with key `x.key` if one already exists)<br/>remove and return the stored item with key `k` |
+| Order               | `iter_ord()`<br/>`find_min()`<br/>`find_max()`<br/>`find_next(k)`<br/>`find_prev(k)` | return the stored items one-by-one in key order <br/>return the stored item with smallest key <br/>return the stored item with largest key <br/>return the stored item with smallest key larger than `k` <br/>return the stored item with largest key smaller than `k` |
+
+**:pushpin:Special case of set: `Dictionary`**
+
+Sets are generalizations of `Dictionary` and other intrinsic query databases. The hierarchy is the following:
+
+<center>
+<figure>
+  <img src="img/dictionary.png" style="width:20%" class="center">
+  <figcaption>Fig. Hierarchy of set interface and dictionary.</figcaption>
+</figure>
+</center>
+
+
+
+## 2.3. Sequence Implementations
+
+Here, we will discuss 3 data structures which have implemented the sequence interface.
+
+<center>
+<figure>
+  <img src="img/sequence_interface.png" style="width:50%" class="center">
+  <figcaption>Fig. The data structure which implement the sequence interface.</figcaption>
+</figure>
+</center>
+
+The performance of each can be illustrated as followed:
+
+<center>
+<figure>
+  <img src="img/performance_sequence_interface.png" style="width:80%" class="center">
+  <figcaption>Fig. The performance of data structure which has implemented the sequence interface.</figcaption>
+</figure>
+</center>
+
+
+### 2.3.1. Array Sequence
+
+The array sequence here actually refers to **static** array.
+
+:thumbsup:**Advantage**: Great for static operations.    e.g. `get_at(i)` and `set_at(i,x)` in $\Theta(1)$ time
+
+:thumbsdown:**Disadvantage**: Bad for dynamic operations. e.g. inserting and removing items require :one:reallocating the array:two:shifting all items after the modified item.
+
+### 2.3.2. Linked List Sequence
+
+<u>Linked List Sequence</u> is a **Pointer data structure** where each item stored in a node containing a pointer to the next node in sequence. Each node has *2* fields: `node.item` and `node.next`
+
+:thumbsup:**Advantage**: insert and delete from the front in $\Theta(1)$ time!
+
+:thumbsdown:**Disadvantage**: `get_at(i)` and `set_at(i,x)` take $\Omicron(n)$ time
+
+### 2.3.3. Dynamic Array Sequence
+
+The idea behind Dynamic Array Sequence is that **allocate extra space** so reallocation does not occur with every dynamic operation. 
+
+:pushpin:**How does it work?**
+
+Whenever the array is full ($r=1$), allocate $\Theta(n)$ extra space at end to fill ratio $r_i$ (e.g., 1/2). 
+
+
+
+
+
+
+
+
 
 
 
 
 
 # 3.Sorting
+
+
+
+# Appendix
+
+:pushpin:**Data structure and Interface**
+
+```mermaid
+flowchart TD
+    subgraph DataStructure
+    Algorithm_1 & Algorithm_2 & Algorithm... & Algorithm_n <--> Algorithms
+    Algorithms --> Operations
+    Operations --> Data
+    Data <--> data_1 & data_2 & data... & data_n
+    end
+    Operations --> Interface <--> Other
+```
+
+:pushpin:**stack and queue**
+
+```mermaid
+flowchart TD
+    Sequence --> stack & queue & ...
+```
+
+:pushpin:**dictionary**
+
+```mermaid
+flowchart TD
+    Set --> Dictionary & ...
+```
 
