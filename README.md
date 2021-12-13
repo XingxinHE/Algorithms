@@ -617,13 +617,25 @@ The performance of each can be illustrated as followed:
 
 ### 2.3.1. Array Sequence
 
-The array sequence here actually refers to **static** array.
+The array sequence here actually refers to **static** array with fixed size.
 
-:thumbsup:**Advantage**: Great for static operations.    e.g. `get_at(i)` and `set_at(i,x)` in $\Theta(1)$ time
+> ​	:thumbsup:**Advantage**: Great for static operations.    e.g. `get_at(i)` and `set_at(i,x)` in $\Theta(1)$ time
 
-:thumbsdown:**Disadvantage**: Bad for dynamic operations. e.g. inserting and removing items require :one:reallocating the array:two:shifting all items after the modified item.
+> ​	:thumbsdown:**Disadvantage**: Bad for dynamic operations. e.g. inserting and removing items require :one:reallocating the array:two:shifting all items after the modified item.
 
-//TODO complete description here
+
+
+:pushpin:**Diagram of Array**
+
+<center>
+<figure>
+  <img src="img/array_1.png" style="width:20%" class="center">
+  <figcaption>Fig. What Array is.</figcaption>
+</figure>
+    <figure>
+  <img src="img/array_2.png" style="width:25%" class="center">
+  <figcaption>Fig. What Array is in memory.</figcaption>
+</center>
 
 
 
@@ -635,7 +647,33 @@ The array sequence here actually refers to **static** array.
 
 :thumbsdown:**Disadvantage**: `get_at(i)` and `set_at(i,x)` in worst take $\Omicron(n)$ time
 
-//TODO complete description here
+
+
+:pushpin:**Diagram of Linked List**
+
+<center>
+<figure>
+  <img src="img/linkedlist_1.png" style="width:30%" class="center">
+  <figcaption>Fig. What Linked List is.</figcaption>
+</figure>
+    <figure>
+  <img src="img/linkedlist_2.png" style="width:30%" class="center">
+  <figcaption>Fig. What Linked List actually is in memory.</figcaption>
+</figure>
+        <figure>
+  <img src="img/linkedlist_insert.png" style="width:65%" class="center">
+  <figcaption>Fig. How to insert item to Linked List.</figcaption>
+</figure>
+</center>
+
+
+
+:pushpin:Why **`get_at(i)` and `set_at(i,x)`** will take $\Omicron(n)$?
+
+See the difference inside memory between Array and Linked List.
+
+- Array:  the address of each item in memory is continous.
+- Linked List:  the address is NOT continuous, the address of $i$-th item is recored by $i-1$-th item
 
 
 
@@ -655,7 +693,16 @@ The `list` in Python is dynamic array.
 
 :three: Insert $\Theta(n)$ items before the next reallocation
 
-//TODO diagram illustrate this
+
+
+:pushpin:**Diagram**
+
+<center>
+<figure>
+  <img src="img/dynamic_array.png" style="width:50%" class="center">
+  <figcaption>Fig. How dynamic array work.</figcaption>
+</figure>
+</center>
 
 
 
