@@ -697,12 +697,12 @@ The `list` in Python is dynamic array.
 
 :pushpin:**Diagram**
 
-<center>
+<div align="center">
 <figure>
   <img src="img/dynamic_array.png" style="width:50%" class="center">
   <figcaption>Fig. How dynamic array work.</figcaption>
 </figure>
-</center>
+</div>
 
 
 
