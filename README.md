@@ -623,27 +623,83 @@ The array sequence here actually refers to **static** array.
 
 :thumbsdown:**Disadvantage**: Bad for dynamic operations. e.g. inserting and removing items require :one:reallocating the array:two:shifting all items after the modified item.
 
+//TODO complete description here
+
+
+
 ### 2.3.2. Linked List Sequence
 
 <u>Linked List Sequence</u> is a **Pointer data structure** where each item stored in a node containing a pointer to the next node in sequence. Each node has *2* fields: `node.item` and `node.next`
 
 :thumbsup:**Advantage**: insert and delete from the front in $\Theta(1)$ time!
 
-:thumbsdown:**Disadvantage**: `get_at(i)` and `set_at(i,x)` take $\Omicron(n)$ time
+:thumbsdown:**Disadvantage**: `get_at(i)` and `set_at(i,x)` in worst take $\Omicron(n)$ time
+
+//TODO complete description here
+
+
 
 ### 2.3.3. Dynamic Array Sequence
 
 The idea behind Dynamic Array Sequence is that **allocate extra space** so reallocation does not occur with every dynamic operation. 
 
+:pushpin:**Fun Fact of Dynamic Array**
+
+The `list` in Python is dynamic array.
+
 :pushpin:**How does it work?**
 
-Whenever the array is full ($r=1$), allocate $\Theta(n)$ extra space at end to fill ratio $r_i$ (e.g., 1/2). 
+:one:First we denote the fill ratio as $r$ which $0\leq r\leq 1$
+
+:two:Whenever the array is full ($r=1$), allocate $\Theta(n)$ extra space at end to fill ratio $r_i$ (e.g., 1/2). 
+
+:three: Insert $\Theta(n)$ items before the next reallocation
+
+//TODO diagram illustrate this
 
 
 
+:pushpin:**What is the Pros and Cons of this Dynamic Allocation?**
 
+> ​	<u>Pros</u>:smile:: When request space for the array, there **are always over-allocate additional space**.
 
+> ​	<u>Cons</u>:no_mouth:: 
+>
+> ​				**Additional space reserved** will mean **less space is available** for other programs.
+>
+> ​				Any additional allocation will be bounded **the array will again need to be reallocated** and copied over
 
+:pushpin:**What is the strategy to this problem?**
+
+> ​	:star:In short, the strategy is to **amortize the time on reallocation** so that any sequence of $n$ insertions only takes **at most** $\Omicron(n)$ time!
+
+:pushpin:**Why does this strategy work?**
+
+> ​	:star: Because such linear time reallocation operations **do not occur often**, so insertion will take $\Omicron(1)$ time per insertion on average.
+
+:pushpin:**Amortized Constant Time**
+
+> ​	We call this asymptotic running time **amortized constant time**.
+
+:pushpin:**What is the strategy exactly?**
+
+> ​	:star::heavy_check_mark: The strategy is to to **allocate extra space in proportion to the size** of the array being stored. 
+>
+> ​	:x: This strategy **does not allocate constant fraction of additional space**. Because it will achieve the amortized bound.
+
+ Python Lists allocate additional space according to the following formula (from the Python source code written in C):
+
+```c
+new_allocated = (newsize >> 3) + (newsize < 9 ? 3 : 6);
+```
+
+The `new_allocated` number means **the additional length required adding** to the original array.
+
+:pushpin:**Convention Proportion of New Allocation**
+
+> ​	Adding(like `append`): when the length reaches the max length, expand the size to $2n$. 
+>
+> ​	Removing(like `pop`): when the length is reduced to $\frac{1}{4}$ of original length, shrink the size to $\frac{1}{2}$
 
 
 
