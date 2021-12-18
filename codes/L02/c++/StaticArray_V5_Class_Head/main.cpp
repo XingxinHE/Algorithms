@@ -6,7 +6,7 @@ Copyright (c) 2021 HE, Xingxin
 
 Module Name:
 
-	A file demonstrating static array with class.
+	A file demonstrating static array with class separated with header file and cpp file.
 
 
 Notes:
@@ -18,6 +18,7 @@ History:
 
 
 \************************************************************************/
+
 
 #include "StaticArray.h"
 
