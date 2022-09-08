@@ -3,45 +3,6 @@
 
 # 1.Introduction
 
-:dart: The goal is to **solve** computation problems, and to **communicate** that your solutions are **correct** and **efficient**.
-
-This lecture covers following topics:
-
-- algorithm - to know what it is first
-- correctness - then to define what is correct
-- efficiency - evaluate the efficiency
-- model of computation - how to compute and integrate algorithm in computation
-- data structure - how data structure can help
-- runtime analysis - having all set up, it's time to analyze
-
-
-
-## 1.1. Algorithm
-
-:pushpin:**What is a algorithm?**
-
-It has following properties:
-
-- Procedure mapping each input to a **single** output (deterministic)
-
-- Algorithm **solves** a problem if it returns a correct output for every problem input
-
-
-
-:pushpin:**Example of an algorithm**
-
-An algorithm to see whether there are students with same birthday in a same classroom.
-
-A. Maintain a record of names and birthdays(initially empty)
-
-B. Interview each student(loop)
-
-​	B.1. *if* birthday exists in record, return found(**true**)
-
-​	B.2. *else* add name and birthday to record(**false**)
-
-C. Return **None** if last interviewed student without success
-
 
 
 ## 1.2. Correctness
@@ -181,36 +142,6 @@ Normally, we suppose the processor supports many **constant time operations** on
 
 
 ## 1.5. Data Structures
-
-:pushpin:**What is data structure?**
-
-A **data structure** is **a way to store a non-constant amount of data**, supporting a set of operations to interact with that data.
-
-
-
-:pushpin:**What is interface?**
-
-The set of operations supported by a data structure is called an **interface**. (:warning: The interface here is not the one in C# e.g. `IEnumerable`)
-
-Example:
-
-- `List<T>` has the interface of `Add()`
-
-- `Dictionary<TKey, TValue>` has the interface of `Add()`
-
-- :warning: They are with same operation but their logic behind are highly different.
-
-
-
-:pushpin:**Why data structures are important?**
-
-The data structures determine **how to store data highly affect the runtime** of such a algorithm.
-
-- Many data structures might support the same interface, but could provide different performance for each operation. 
-
-- Many problems can be solved trivially by storing data in an appropriate choice of data structure.
-
-
 
 :pushpin:**What is Static Array?**
 
