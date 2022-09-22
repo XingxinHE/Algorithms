@@ -237,14 +237,6 @@ Substituting in $6n$ gives an expression that is at least $6^{6n}$ larger than t
 
 ## 2.1. Sequence Interface
 
-📌**What is a sequence?**
-
-Sequences maintain a collection of items in an **extrinsic** order, where each item stored has **a rank in the sequence**, including a first item and a last item.
-
-📌**What does it mean by `extrinsic`?**
-
-By extrinsic, we mean that the first item is ‘first’, not because of what the item is, but **because some external party put it there**. In short, the first is because it is THE first.
-
 📌**Properties of sequence**
 
 Therefore, we can conclude that the sequence interface has following properties:
