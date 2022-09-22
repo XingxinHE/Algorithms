@@ -46,5 +46,7 @@ public class Main {
         test(new QuickFind());
         test(new QuickUnion());
         test(new WeightedUnion());
+        test(new WeightedUnionOnePassCompression());
+        test(new WeightedUnionTwoPassCompression());
     }
 }
